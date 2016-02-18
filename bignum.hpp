@@ -140,7 +140,7 @@ namespace bignum {
 
             for(size_t i = 0; i < sz1; i++)
             {
-                unit_type vi = tmp_data.at(i);
+                higher_unit_type vi = tmp_data.at(i);
                 for (size_t j = 0; j < sz2; j++)
                 {
                     higher_unit_type prod = vi * o_.data.at(j);
@@ -214,6 +214,9 @@ namespace bignum {
             else if (unit < 10000U) return 4;
             else if (unit < 100000UL) return 5;
             else if (unit < 1000000UL) return 6;
+            else if (unit < 10000000UL) return 7;
+            else if (unit < 100000000UL) return 8;
+            else if (unit < 1000000000UL) return 9;
             assert(false);
             return 0;
         }
@@ -541,10 +544,10 @@ namespace bignum {
         basic_bignum(const basic_bignum & o_) : data(o_.data) { data->add_ref(); }
         ~basic_bignum() { if(data->release()) delete data; }
         basic_bignum & operator=(const basic_bignum & o_) {
+            o_.data->add_ref();
             if(data->release())
                 delete data;
             data = o_.data;
-            data->add_ref();
         }
     protected:
         void ensure_owned_data()
